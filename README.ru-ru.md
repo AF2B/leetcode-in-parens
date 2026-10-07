@@ -63,10 +63,12 @@ solutions/
 ## Запуск локально
 
 Требования: Racket CS (версия, зафиксированная в
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Полная дистрибуция
+уже включает rackunit; для минимальной дополнительно установите
+`rackunit-lib`.
 
 ```bash
-raco pkg install --auto rackunit-lib fmt review
+raco pkg install --auto --skip-installed fmt review
 
 raco test solutions/easy/two-sum   # одна задача
 raco test solutions                # всё

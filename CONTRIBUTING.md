@@ -96,7 +96,7 @@ raco test solutions/easy/two-sum
 - `raco make` must compile without errors.
 
 ```bash
-raco pkg install --auto rackunit-lib fmt review
+raco pkg install --auto --skip-installed fmt review
 raco review solutions/easy/two-sum/*.rkt
 raco fmt -i solutions/easy/two-sum/*.rkt
 ```

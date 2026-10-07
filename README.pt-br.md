@@ -63,10 +63,11 @@ página do repositório para achar um problema.
 ## Rodando localmente
 
 Requisitos: Racket CS (a versão fixada em
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml)). A distribuição
+completa já inclui o rackunit; na mínima, instale também `rackunit-lib`.
 
 ```bash
-raco pkg install --auto rackunit-lib fmt review
+raco pkg install --auto --skip-installed fmt review
 
 raco test solutions/easy/two-sum   # um problema
 raco test solutions                # tudo

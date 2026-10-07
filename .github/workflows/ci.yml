@@ -73,7 +73,7 @@ jobs:
           version: stable
 
       - name: Install tools
-        run: raco pkg install --auto --batch --no-docs fmt review rackunit-lib
+        run: raco pkg install --auto --batch --no-docs fmt review
         shell: bash
 
       - name: Lint
