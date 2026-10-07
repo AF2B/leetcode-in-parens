@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build & test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: Bogdanp/setup-racket@v1.15
+        with:
+          architecture: x64
+          distribution: minimal
+          variant: CS
+          version: stable
+
+      - name: Install dependencies
+        run: raco pkg install --auto --batch --no-docs rackunit-lib
+        shell: bash
+
+      - name: Select problems
+        id: select
+        shell: bash
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            targets=$(git diff --name-only --diff-filter=d \
+              "origin/${GITHUB_BASE_REF}...HEAD" -- solutions \
+              | xargs -r -n1 dirname | sort -u | tr '\n' ' ')
+          else
+            targets="solutions"
+          fi
+          echo "targets=${targets}" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        if: steps.select.outputs.targets != ''
+        env:
+          TARGETS: ${{ steps.select.outputs.targets }}
+        shell: bash
+        run: find $TARGETS -name '*.rkt' -print0 | xargs -0 raco make -v
+
+      - name: Test
+        if: steps.select.outputs.targets != ''
+        env:
+          TARGETS: ${{ steps.select.outputs.targets }}
+        shell: bash
+        run: raco test $TARGETS
+
+  quality:
+    name: Lint & format
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: Bogdanp/setup-racket@v1.15
+        with:
+          architecture: x64
+          distribution: minimal
+          variant: CS
+          version: stable
+
+      - name: Install tools
+        run: raco pkg install --auto --batch --no-docs fmt review rackunit-lib
+        shell: bash
+
+      - name: Lint
+        run: git ls-files '*.rkt' | xargs -r raco review
+        shell: bash
+
+      - name: Check formatting
+        shell: bash
+        run: |
+          git ls-files '*.rkt' | xargs -r raco fmt -i
+          git diff --exit-code

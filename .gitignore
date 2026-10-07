@@ -1,0 +1,7 @@
+compiled/
+*.zo
+*.dep
+.DS_Store
+.vscode/
+.idea/
+.env

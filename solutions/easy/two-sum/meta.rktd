@@ -1,0 +1,7 @@
+#hasheq((id . 1)
+        (slug . "two-sum")
+        (title . "Two Sum")
+        (difficulty . easy)
+        (topics . (array hash-table))
+        (entry . two-sum)
+        (approaches . (hash-map brute-force)))

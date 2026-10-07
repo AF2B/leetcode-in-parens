@@ -1,0 +1,11 @@
+easy:
+  - changed-files:
+      - any-glob-to-any-file: solutions/easy/**
+
+medium:
+  - changed-files:
+      - any-glob-to-any-file: solutions/medium/**
+
+hard:
+  - changed-files:
+      - any-glob-to-any-file: solutions/hard/**
