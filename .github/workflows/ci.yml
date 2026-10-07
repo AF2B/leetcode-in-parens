@@ -68,7 +68,7 @@ jobs:
       - uses: Bogdanp/setup-racket@v1.15
         with:
           architecture: x64
-          distribution: minimal
+          distribution: full
           variant: CS
           version: stable
 
