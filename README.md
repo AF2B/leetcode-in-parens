@@ -2,24 +2,20 @@
 
 # LeetCode in Parens
 
-![CI](https://github.com/AF2B/leetcode-in-parens/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Racket](https://img.shields.io/badge/Racket-CS-9f1d20.svg)
+![Common Lisp](https://img.shields.io/badge/Common%20Lisp-SBCL-3d6aa6.svg)
 
-Every free LeetCode problem that accepts Racket, solved in parentheses. Each
-solution is idiomatic Racket, tested with rackunit, and often solved from more
-than one angle — brute force, optimized, recursive — side by side in the same
-file. Build, lint, format and tests run on every pull request.
+Every free LeetCode problem in the Algorithms category, solved in Common Lisp.
+One file per problem, often with more than one approach — brute force,
+optimized, recursive — side by side in the same file.
 
 ## Progress
 
-<!-- progress:start -->
 | Difficulty | Solved |
 |---|---|
 | 🟢 Easy | 1 |
 | 🟡 Medium | 0 |
 | 🔴 Hard | 0 |
-<!-- progress:end -->
 
 The full index, by number, difficulty and topic, lives in
 [PROBLEMS.md](PROBLEMS.md).
@@ -38,21 +34,22 @@ ready for it whenever it's worth doing.
 ```
 solutions/
   easy/
-    two-sum/
-      README.md        # statement summary in my own words, link
-      meta.rktd        # id, slug, title, difficulty, topics, approaches
-      solution.rkt     # every approach; the first one is the canonical one
-      test.rkt         # rackunit tests
+    two-sum.lisp
   medium/
   hard/
 ```
 
-Problems sit directly inside the difficulty folder LeetCode gives them, named
-by LeetCode's own slug (the one in the problem URL). The slug is the problem's
-unique key; the problem number lives in `meta.rktd` and in the README title.
-A problem is one folder with exactly four files, never a folder per approach:
-each approach is another function in the same `solution.rkt`, covered by the
-same `test.rkt`.
+A problem is a single `.lisp` file, named by LeetCode's own slug (the one in
+the problem URL) and placed directly inside the difficulty folder LeetCode
+gives it. The problem number isn't in the path; the slug is the unique key.
+Each file holds:
+
+- a header comment with the link, difficulty, topics and approaches;
+- its own package, `leetcode.<slug>`, with an explicit export list;
+- one function per approach: the one named after the problem is the canonical
+  approach, the others carry a suffix, like `two-sum-brute-force`;
+- the statement's examples at the bottom, as comments with the expected
+  results.
 
 GitHub's web UI truncates folders with more than 1,000 entries, and `medium/`
 will pass that. Use [PROBLEMS.md](PROBLEMS.md) or press `t` on the repository
@@ -60,26 +57,31 @@ page to find a problem.
 
 ## Running locally
 
-Requirements: Racket CS (the version pinned in
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml)). The full
-distribution already includes rackunit; with the minimal one, also install
-`rackunit-lib`.
+Requirements: [SBCL](https://www.sbcl.org).
 
 ```bash
-raco pkg install --auto --skip-installed fmt review
-
-raco test solutions/easy/two-sum   # one problem
-raco test solutions                # everything
+sbcl --load solutions/easy/two-sum.lisp
 ```
+
+```lisp
+(leetcode.two-sum:two-sum '(2 7 11 15) 9)
+;; => (0 1)
+```
+
+## How solutions are verified
+
+There is no CI and no test suite. Before a solution is pushed, the author loads
+it in SBCL and evaluates by hand the examples at the bottom of the file at the
+REPL. These solutions aren't judged by LeetCode, so nothing else checks them: an
+issue about a wrong answer is welcome.
 
 ## Conventions
 
-- Racket only: `#lang racket/base` with explicit `require`s.
-- The entry function keeps the exact name and contract of LeetCode's Racket
-  template, so a solution can be pasted into the editor.
-- Every problem ships a `test.rkt`; a solution without tests isn't done.
-- `raco review` with zero warnings and `raco fmt` with no diff.
-- Conventional Commits in English, one problem per pull request.
+- Common Lisp, developed with SBCL.
+- One package per file with an explicit `:export`; `kebab-case` names.
+- Every exported function has a docstring with one line per parameter.
+- Expected failures are condition types (`no-solution`), not generic errors.
+- Conventional Commits in English, pushed straight to `main`.
 
 The full rules are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -91,19 +93,19 @@ Annotated git tags mark progress: `solved-100`, `solved-250`, `solved-500`,
 
 ## Scope and legal
 
-The scope is every free (non-premium) problem that accepts Racket. Problems
-that don't accept Racket, and premium problems, are out of scope for now.
+The scope is every free (non-premium) problem in LeetCode's Algorithms
+category. SQL, Bash, Pandas and JavaScript 30-day problems are out of scope.
 
 Problem statements belong to LeetCode. This repository links to each problem
-and summarizes it in its own words; it doesn't copy statements or the site's
-test data. It is not affiliated with LeetCode.
+and doesn't copy statements or the site's test data. It is not affiliated with
+LeetCode.
 
 ## Contributing
 
 This is a personal showcase, so the solutions are the maintainer's own.
-Corrections are welcome — a wrong answer, a missing test case, a typo — see
-[CONTRIBUTING.md](CONTRIBUTING.md). Alternative solutions from third parties
-aren't accepted.
+Corrections are welcome — a wrong answer, a typo — as an issue or a pull
+request, see [CONTRIBUTING.md](CONTRIBUTING.md). Alternative solutions from
+third parties aren't accepted.
 
 ## License
 

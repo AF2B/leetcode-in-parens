@@ -1,7 +1,8 @@
 # Vocabulary
 
-The values allowed in `meta.rktd`. Extend a list in the same pull request that
-needs the new value.
+Reference values for the `Topics` and `Approaches` lines in each file's header.
+Nothing enforces them: stick to these names so the repository stays searchable,
+and add a value in the same commit that needs it.
 
 ## Topics
 
@@ -27,8 +28,8 @@ LeetCode's topic tags in kebab-case.
 
 ## Approaches
 
-How a solution attacks the problem. The first approach in `meta.rktd` is the
-canonical one.
+How a solution attacks the problem. The first approach listed in a file's header
+is the canonical one.
 
 `brute-force` · `hash-map` · `two-pointers` · `sliding-window` · `recursive` ·
 `iterative` · `divide-and-conquer` · `dp-memo` · `dp-tabulation` · `greedy` ·

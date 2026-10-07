@@ -1,6 +1,4 @@
-compiled/
-*.zo
-*.dep
+*.fasl
 .DS_Store
 .vscode/
 .idea/
